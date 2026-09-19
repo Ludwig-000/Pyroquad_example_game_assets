@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pyroquad example game</title>
+<!-- The playable page lives in demo/, next to the Pyodide runtime and the
+     packaged engine it loads with relative paths. The site root just forwards
+     there, so https://<user>.github.io/<repo>/ lands on the game. -->
+<meta http-equiv="refresh" content="0; url=./demo/">
+<link rel="canonical" href="./demo/">
+<style>
+  html, body { margin: 0; height: 100%; background: #101014; color: #cfd2d8;
+               font: 13px/1.5 ui-monospace, Consolas, monospace; }
+  main { display: grid; place-content: center; height: 100%; text-align: center; }
+  a { color: #9ae6a0; }
+</style>
+</head>
+<body>
+<main>
+  <p>loading the pyroquad example game ...</p>
+  <p><a href="./demo/">continue to the demo</a></p>
+</main>
+<script>location.replace("./demo/");</script>
+</body>
+</html>
