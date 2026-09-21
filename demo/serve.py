@@ -1,9 +1,9 @@
 """Static dev server for the browser build.
 
-    python web/serve.py            # http://127.0.0.1:8000/web/index.html
+    python demo/serve.py           # http://127.0.0.1:8000/demo/index.html
 
-Serves the repository root so that `web/index.html` can reach both `web/` and
-the test scripts at the top level. Sends no-cache headers (the .wasm changes on
+Serves the repository root so that `demo/index.html` can reach both `demo/` and
+the game assets at the top level. Sends no-cache headers (the .wasm changes on
 every rebuild) and the WebAssembly mime type.
 
 Cross-origin isolation headers are sent as well. They are not required by this
@@ -49,7 +49,7 @@ def main() -> int:
     os.chdir(ROOT)
     http.server.ThreadingHTTPServer.allow_reuse_address = True
     with http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler) as httpd:
-        print(f"serving {ROOT} at http://127.0.0.1:{PORT}/web/index.html")
+        print(f"serving {ROOT} at http://127.0.0.1:{PORT}/demo/index.html")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

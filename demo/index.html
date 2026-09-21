@@ -81,9 +81,23 @@ print("Vec2      ", Vec2(3, 4).length())
     log("pyodide " + pyodide.version + "  (CPython " + pyodide.runPython("import sys; sys.version.split()[0]") + ")", "ok");
     log("JSPI available: " + (typeof WebAssembly.Suspending !== "undefined"), "dim");
 
-    log("installing pyroquad ...", "dim");
-    const buf = await (await fetch("./pyroquad_pkg.zip", { cache: "no-store" })).arrayBuffer();
-    pyodide.unpackArchive(buf, "zip");
+    // The engine is published to PyPI as a pyemscripten wasm32 wheel, so the
+    // page installs it with micropip exactly the way a user would - no engine
+    // build is vendored here, and a reload picks up the latest release.
+    // ?pyroquad=0.1.6 pins a version (only releases that ship a wasm32 wheel
+    // can run here), and ?pyroquad=<url to a .whl> installs that file instead,
+    // which is how a locally built wheel gets tried before it is published.
+    const pin = params.get("pyroquad");
+    const requirement = !pin ? "pyroquad" : /^[0-9]/.test(pin) ? "pyroquad==" + pin : pin;
+
+    log("installing " + requirement + " from PyPI ...", "dim");
+    // micropip ships next to the runtime (demo/get_pyodide.py stages it), so
+    // this resolves locally rather than against a package CDN.
+    await pyodide.loadPackage("micropip");
+    const micropip = pyodide.pyimport("micropip");
+    await micropip.install(requirement);
+    log("installed pyroquad " + pyodide.runPython(
+      "import importlib.metadata as m; m.version('pyroquad')"), "ok");
 
     if (script) {
       log("fetching " + script, "dim");
